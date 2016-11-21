@@ -6,11 +6,9 @@
     <version>1.0</version>
   </parent>
   
-  <artifactId>arcane-api</artifactId>
-  <name>Arcane Common Interface</name>
-  <version>${arcane.api.version}</version>
-  <description>An pre-defined interface definition for arcane implementations and end users.</description>
-  <packaging>jar</packaging>
+  <artifactId>arcane-seal-effect</artifactId>
+  <name>Arcane Seal Effect</name>
+  <description>Magic seal effect as a preset effect in arcane project.</description>
   
   <build>
   		<sourceDirectory>main/java</sourceDirectory>
@@ -29,6 +27,11 @@
 		<dependency>
 			<groupId>org.bukkit</groupId>
 			<artifactId>bukkit</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>net.aegistudio.arcane</groupId>
+			<artifactId>arcane-api</artifactId>
+			<version>${arcane.api.version}</version>
 		</dependency>
 	</dependencies>
 </project>

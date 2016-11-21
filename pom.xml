@@ -4,8 +4,13 @@
 	<artifactId>arcane</artifactId>
 	<version>1.0</version>
 	<packaging>pom</packaging>
-	<name>Arcane</name>
+	<name>Arcane Project</name>
 	<description>A refactored interface designed for using effects inside any bukkit server.</description>
+	
+	<!-- inherited properties for the holistic project. -->
+	<properties>
+		<arcane.api.version>1.0</arcane.api.version>
+	</properties>
 	
 	<!-- ensure all submodules depends on the same version of artifacts. -->
 	<dependencyManagement><dependencies>
@@ -51,7 +56,9 @@
 			<url>http://nexus.aegistudio.net/repository/snapshot/</url>
 		</snapshotRepository>
 	</distributionManagement>
+	
 	<modules>
 		<module>arcane-api</module>
+		<module>arcane-seal-effect</module>
 	</modules>
 </project>
