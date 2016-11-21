@@ -11,7 +11,7 @@ public class AlgebraExpression {
 		try {
 			v = Double.parseDouble(expression);
 		}
-		catch(Throwable t) {
+		catch(NumberFormatException t) {
 			v = null;
 			try {
 				this.expression = new Expression(expression);
@@ -31,15 +31,15 @@ public class AlgebraExpression {
 	public double getDouble(Parameter params) {
 		Object result = this.getValue(params, 0.0);
 		if(result instanceof Double)
-			return ((Double)result);
+			return (Double)result;
 		else if(result instanceof Float) 
-			return ((Float)result);
+			return (Float)result;
 		else if(result instanceof Integer)
-			return ((Integer)result);
+			return (Integer)result;
 		else if(result instanceof Long)
-			return ((Long)result);
+			return (Long)result;
 		else if(result instanceof Boolean)
-			return ((Boolean)result)? 1.0:0.0;
+			return (Boolean)result? 1.0:0.0;
 		return 0.0;
 	}
 	

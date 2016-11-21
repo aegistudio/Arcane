@@ -58,7 +58,7 @@ public class Expression {
 			this.bind(bindings);
 			return script.eval(bindings);
 		}
-		catch(Throwable t) {
+		catch(Exception t) {
 			return null;
 		}
 	}

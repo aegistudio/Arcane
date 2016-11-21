@@ -61,5 +61,6 @@
 		<module>arcane-api</module>
 		<module>arcane-seal-effect</module>
 		<module>arcane-spawnable</module>
+		<module>arcane-preset-effect</module>
 	</modules>
 </project>
