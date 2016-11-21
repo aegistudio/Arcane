@@ -1,0 +1,66 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>net.aegistudio.arcane</groupId>
+    <artifactId>arcane</artifactId>
+    <version>1.0</version>
+  </parent>
+  <artifactId>arcane-engine</artifactId>
+  <name>Arcane Engine Plugin</name>
+  <description>A plugin served as a dedicated engine for arcane project.</description>
+  
+  <build>
+  		<sourceDirectory>main/java</sourceDirectory>
+		<resources><resource>
+			<directory>main/resources</directory>
+		</resource></resources>
+		
+		<plugins>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<executions><execution>
+					<id>plugin-release</id>
+					<phase>package</phase>
+					<goals><goal>single</goal></goals>
+					<configuration>
+						<descriptors>
+							<descriptor>assembly.xml</descriptor>
+						</descriptors>
+					</configuration>
+				</execution></executions>
+			</plugin>
+		</plugins>
+  </build>
+  
+	<dependencies>
+		<dependency>
+			<groupId>org.bukkit</groupId>
+			<artifactId>bukkit</artifactId>
+		</dependency>
+		<!-- add abstraction to this workset -->
+		<dependency>
+			<groupId>net.aegistudio.arcane</groupId>
+			<artifactId>arcane-api</artifactId>
+			<version>${arcane.api.version}</version>
+		</dependency>
+		<!-- add other submodules to this workset -->
+		<dependency>
+			<groupId>net.aegistudio.arcane</groupId>
+			<artifactId>arcane-seal-effect</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>net.aegistudio.arcane</groupId>
+			<artifactId>arcane-spawnable</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>net.aegistudio.arcane</groupId>
+			<artifactId>arcane-preset-effect</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+	</dependencies>
+</project>
