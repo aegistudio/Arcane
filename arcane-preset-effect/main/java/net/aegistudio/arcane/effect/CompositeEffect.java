@@ -1,4 +1,4 @@
-package net.aegistudio.magick.effect;
+package net.aegistudio.arcane.effect;
 
 import java.util.Map;
 import java.util.Map.Entry;

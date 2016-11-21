@@ -1,4 +1,4 @@
-package net.aegistudio.magick.effect;
+package net.aegistudio.arcane.effect;
 
 import net.aegistudio.arcane.SpellEffect;
 import net.aegistudio.arcane.expr.AlgebraExpression;
