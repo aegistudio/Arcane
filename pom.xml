@@ -51,4 +51,7 @@
 			<url>http://nexus.aegistudio.net/repository/snapshot/</url>
 		</snapshotRepository>
 	</distributionManagement>
+	<modules>
+		<module>arcane-api</module>
+	</modules>
 </project>
