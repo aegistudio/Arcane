@@ -1,0 +1,17 @@
+# Modification on effect engine class does not actually 
+# function. However you could still configure the path
+# configuration and so on under the effect engine conifg.
+effectEngineClass: effect.default
+effectEngineConfig: 
+  effectPath: '.'
+  fileExtension: 'mfg'
+  resourcePath: '.'
+  templatePath: 'template'
+  extensionPath: "extension"
+
+# Modification on buff engine class will affect how is the 
+# buff beging presented to the user. Defaultly it is muted,
+# where no explicit tip will be presented in the user 
+# interface.
+buffEngineClass: buff.muted
+buffEngineConfig: {}

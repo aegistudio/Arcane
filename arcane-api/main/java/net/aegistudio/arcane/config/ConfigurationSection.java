@@ -6,6 +6,7 @@ import java.util.function.Consumer;
 
 import net.aegistudio.arcane.Module;
 import net.aegistudio.arcane.expr.AlgebraExpression;
+import net.aegistudio.arcane.map.ClassAbbreviation;
 
 public class ConfigurationSection extends DelegateSection {
 	protected final ClassAbbreviation abbreviation;

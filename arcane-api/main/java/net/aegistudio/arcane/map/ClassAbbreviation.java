@@ -1,4 +1,4 @@
-package net.aegistudio.arcane.config;
+package net.aegistudio.arcane.map;
 
 import java.util.HashMap;
 import java.util.TreeMap;
@@ -24,8 +24,8 @@ public class ClassAbbreviation {
 		return (className == null)? clazz.getName() : className;
 	}
 	
-	public void register(String abbreviation, String fullname) throws ClassNotFoundException {
+	public void register(String abbreviation, Class<?> clazz) throws ClassNotFoundException {
 		if(abbrClassTable.containsKey(abbreviation)) return;
-		abbrClassTable.put(abbreviation, Class.forName(fullname));
+		abbrClassTable.put(abbreviation, clazz);
 	}
 }

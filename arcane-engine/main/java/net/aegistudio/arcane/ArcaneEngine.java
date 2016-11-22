@@ -18,7 +18,7 @@ public class ArcaneEngine implements Engine {
 	}
 
 	@Override
-	public Context connect(Server arg0, Plugin arg1) {
+	public Context connect(Server server, Plugin plugin) {
 		return null;
 	}
 
