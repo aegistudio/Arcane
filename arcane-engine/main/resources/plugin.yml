@@ -1,0 +1,4 @@
+name: Arcane
+main: net.aegistudio.arcane.ArcanePlugin
+version: 1.0
+author: aegistudio

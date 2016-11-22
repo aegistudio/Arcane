@@ -1,7 +1,6 @@
 package net.aegistudio.arcane.capable;
 
 import net.aegistudio.arcane.Context;
-import net.aegistudio.arcane.Engine;
 
 /**
  * Allow describing information of an effect.
@@ -9,7 +8,7 @@ import net.aegistudio.arcane.Engine;
  * @author aegistudio
  */
 
-public interface Descriptive extends Engine {
+public interface Descriptive extends Capability {
 	/**
 	 * Describe an effect in the effect database.
 	 * 

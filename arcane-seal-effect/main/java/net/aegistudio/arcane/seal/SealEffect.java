@@ -3,10 +3,10 @@ package net.aegistudio.arcane.seal;
 import org.bukkit.entity.Entity;
 
 import net.aegistudio.arcane.Context;
-import net.aegistudio.arcane.SpellEffect;
+import net.aegistudio.arcane.Effect;
 import net.aegistudio.arcane.config.ConfigurationSection;
 
-public class SealEffect implements SpellEffect {
+public class SealEffect implements Effect {
 	Generator generator;
 	private static final String GENERATOR_CLAZZ = "generatorClass";
 	private static final String GENERATOR_CONFIG = "generatorConfig";
@@ -42,7 +42,7 @@ public class SealEffect implements SpellEffect {
 	}
 	
 	@Override
-	public void spell(Context context, Entity sender, String[] params) {
+	public void execute(Context context, Entity sender, String[] params) {
 		new SealPaintTask(context, this, painterFactory.newPainter(sender), params).start();
 	}
 }

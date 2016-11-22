@@ -7,11 +7,11 @@ import java.util.TreeMap;
 import org.bukkit.entity.Entity;
 
 import net.aegistudio.arcane.Context;
-import net.aegistudio.arcane.SpellEffect;
+import net.aegistudio.arcane.Effect;
 import net.aegistudio.arcane.config.ConfigurationSection;
 import net.aegistudio.arcane.expr.AlgebraExpression;
 
-public abstract class CompositeEffect implements SpellEffect {
+public abstract class CompositeEffect implements Effect {
 	protected Map<String, CompositeEffectEntry> subEffects = new TreeMap<String, CompositeEffectEntry>();
 	
 	@Override
@@ -19,7 +19,7 @@ public abstract class CompositeEffect implements SpellEffect {
 		for(String entry : config.getKeys(false)) 
 			if(entry.endsWith("Class")) {
 				String subEffect = entry.substring(0, entry.length() - "Class".length());
-				SpellEffect effectInstance = config.loadInstance(SpellEffect.class, 
+				Effect effectInstance = config.loadInstance(Effect.class, 
 						entry, null, subEffect.concat("Config"), null);
 				CompositeEffectEntry compositeEntry = new CompositeEffectEntry();
 				compositeEntry.effect = effectInstance;
@@ -48,5 +48,5 @@ public abstract class CompositeEffect implements SpellEffect {
 	}
 
 	@Override
-	public abstract void spell(Context context, Entity sender, String[] params);
+	public abstract void execute(Context context, Entity sender, String[] params);
 }

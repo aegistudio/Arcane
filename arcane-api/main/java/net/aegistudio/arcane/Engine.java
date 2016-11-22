@@ -1,7 +1,10 @@
 package net.aegistudio.arcane;
 
 import org.bukkit.Server;
+import org.bukkit.entity.Entity;
 import org.bukkit.plugin.Plugin;
+
+import net.aegistudio.arcane.capable.Capability;
 
 /**
  * Load, hold and save effects.
@@ -28,10 +31,11 @@ public interface Engine {
 	 * Perform an effect as the request of another plugin.
 	 * 
 	 * @param context the context provided.
+	 * @param target the entity to which the effect bound.
 	 * @param effect the effect name. (if not exists, nothing will be performed.)
 	 * @param parameters the parameters for effect execution.
 	 */
-	public void execute(Context context, String effect, String[] parameters);
+	public void execute(Context context, Entity target, String effect, String[] parameters);
 	
 	/**
 	 * Request for a capability of the provided engine.
@@ -39,7 +43,7 @@ public interface Engine {
 	 * @param capability the class of the capability.
 	 * @return object if supported, or null if unsupported.
 	 */
-	public <T extends Engine> T capable(Class<T> capability);
+	public <T extends Capability> T capable(Class<T> capability);
 	
 	/**
 	 * @return the name of effects available in the engine.

@@ -12,7 +12,7 @@ import net.aegistudio.arcane.*;
 import net.aegistudio.arcane.config.*;
 import net.aegistudio.arcane.expr.*;
 
-public class VampireHand extends ConfigurableObject implements SpellEffect {
+public class VampireHand extends ConfigurableObject implements Effect {
 	class ContextualObject extends VolatileObject implements Buff, Listener {
 		private TreeMap<Integer, Double> vampire = new TreeMap<Integer, Double>();
 		
@@ -60,7 +60,7 @@ public class VampireHand extends ConfigurableObject implements SpellEffect {
 	private ContextualMap<ContextualObject> map = new ContextualMap<>(context -> new ContextualObject(context));
 	
 	@Override
-	public void spell(Context context, Entity sender, String[] params) {
+	public void execute(Context context, Entity sender, String[] params) {
 		context.getBuffManager().buff(context, sender, map.get(context), 
 				duration.getInt(new Parameter(params)), params);
 	}

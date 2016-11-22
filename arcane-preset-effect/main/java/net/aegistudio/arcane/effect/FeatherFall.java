@@ -14,7 +14,7 @@ import net.aegistudio.arcane.*;
 import net.aegistudio.arcane.config.*;
 import net.aegistudio.arcane.expr.*;
 
-public class FeatherFall extends ConfigurableObject implements SpellEffect {
+public class FeatherFall extends ConfigurableObject implements net.aegistudio.arcane.Effect {
 	class ContextualObject extends VolatileObject implements Listener, Buff {
 		private final TreeMap<Integer, Double> protecting = new TreeMap<Integer, Double>();
 		private Sound feather;
@@ -59,7 +59,7 @@ public class FeatherFall extends ConfigurableObject implements SpellEffect {
 	private final ContextualMap<ContextualObject> map = new ContextualMap<>(context -> new ContextualObject(context));
 	
 	@Override
-	public void spell(Context context, Entity sender, String[] params) {
+	public void execute(Context context, Entity sender, String[] params) {
 		context.getBuffManager().buff(context, sender, map.get(context), duration.getInt(new Parameter(params)), params);
 	}
 

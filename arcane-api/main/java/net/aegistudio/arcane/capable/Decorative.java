@@ -3,7 +3,6 @@ package net.aegistudio.arcane.capable;
 import java.util.function.Consumer;
 
 import net.aegistudio.arcane.Context;
-import net.aegistudio.arcane.Engine;
 import net.aegistudio.arcane.config.ConfigurationSection;
 
 /**
@@ -13,7 +12,7 @@ import net.aegistudio.arcane.config.ConfigurationSection;
  * @author aegistudio
  */
 
-public interface Decorative extends Engine {
+public interface Decorative extends Capability {
 	public String decorate(Context context, String identifier, 
 			Consumer<ConfigurationSection> decorator);
 }

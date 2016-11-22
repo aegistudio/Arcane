@@ -21,7 +21,7 @@ import net.aegistudio.arcane.expr.*;
  * @author aegistudio
  */
 
-public class PotionResistance implements SpellEffect {
+public class PotionResistance implements Effect {
 	class ContextualObject extends VolatileObject implements Buff, Listener, Runnable {
 		private final Context context;
 		public ContextualObject(Context context) {
@@ -105,21 +105,21 @@ public class PotionResistance implements SpellEffect {
 	private final ContextualMap<ContextualObject> map = new ContextualMap<>(context -> new ContextualObject(context));
 	
 	@Override
-	public void spell(Context context, Entity sender, String[] params) {
+	public void execute(Context context, Entity sender, String[] params) {
 		context.getBuffManager().buff(context, sender, map.get(context), 
 				duration.getInt(new Parameter(params)), params);
 	}
 
 	@Override
-	public void load(ConfigurationSection spellConfig) throws Exception {
-		spellConfig.loadConfigurable(this);
-		if(spellConfig.contains(POTIONEFFECT_TYPE))
-			this.potionEffect = PotionEffectType.getByName(spellConfig.getString(POTIONEFFECT_TYPE));
+	public void load(ConfigurationSection executeConfig) throws Exception {
+		executeConfig.loadConfigurable(this);
+		if(executeConfig.contains(POTIONEFFECT_TYPE))
+			this.potionEffect = PotionEffectType.getByName(executeConfig.getString(POTIONEFFECT_TYPE));
 	}
 
 	@Override
-	public void save(ConfigurationSection spellConfig) throws Exception {
-		spellConfig.saveConfigurable(this);
-		spellConfig.set(POTIONEFFECT_TYPE, potionEffect.getName());
+	public void save(ConfigurationSection executeConfig) throws Exception {
+		executeConfig.saveConfigurable(this);
+		executeConfig.set(POTIONEFFECT_TYPE, potionEffect.getName());
 	}
 }

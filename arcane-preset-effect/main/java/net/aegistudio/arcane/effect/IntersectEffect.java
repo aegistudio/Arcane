@@ -9,12 +9,12 @@ import net.aegistudio.arcane.expr.Parameter;
 
 public class IntersectEffect extends CompositeEffect {
 	@Override
-	public void spell(Context element, Entity sender, String[] params) {
+	public void execute(Context element, Entity sender, String[] params) {
 		Parameter param = new Parameter(params);
 		double probability = Math.random();
 		for(Entry<String, CompositeEffectEntry> entry : super.subEffects.entrySet()) {
 			if(entry.getValue().probability.getDouble(param) >= probability) {
-				entry.getValue().effect.spell(element, sender, params);
+				entry.getValue().effect.execute(element, sender, params);
 				return;
 			}
 			else probability -= entry.getValue().probability.getDouble(param);
