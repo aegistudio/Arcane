@@ -6,11 +6,11 @@ public class ConfigurableObject implements Module {
 
 	@Override
 	public void load(ConfigurationSection config) throws Exception {
-		config.loadConfigurable(config);
+		config.loadConfigurable(this);
 	}
 
 	@Override
 	public void save(ConfigurationSection config) throws Exception {
-		config.saveConfigurable(config);
+		config.saveConfigurable(this);
 	}
 }

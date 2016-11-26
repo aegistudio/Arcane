@@ -27,5 +27,6 @@ public class ClassAbbreviation {
 	public void register(String abbreviation, Class<?> clazz) throws ClassNotFoundException {
 		if(abbrClassTable.containsKey(abbreviation)) return;
 		abbrClassTable.put(abbreviation, clazz);
+		classAbbrTable.put(clazz, abbreviation);
 	}
 }

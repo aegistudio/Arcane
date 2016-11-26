@@ -70,7 +70,7 @@ public @interface Configurable {
 			@Override
 			public void save(String fieldName, Field field, Object instance,
 					ConfigurationSection section) throws Exception{
-				AlgebraExpression expression = (AlgebraExpression) field.get(fieldName);
+				AlgebraExpression expression = (AlgebraExpression) field.get(instance);
 				section.set(fieldName, expression.getExpression());
 			}
 			

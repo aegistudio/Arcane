@@ -62,5 +62,10 @@
 			<artifactId>arcane-preset-effect</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>net.aegistudio.arcane</groupId>
+			<artifactId>arcane-buff-manager</artifactId>
+			<version>${project.version}</version>
+		</dependency>
 	</dependencies>
 </project>

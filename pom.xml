@@ -63,5 +63,6 @@
 		<module>arcane-spawnable</module>
 		<module>arcane-preset-effect</module>
 		<module>arcane-engine</module>
+		<module>arcane-buff-manager</module>
 	</modules>
 </project>

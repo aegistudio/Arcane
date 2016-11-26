@@ -19,7 +19,7 @@ public class ConfigurationSection extends DelegateSection {
 		this.rootFolder = rootFolder;
 	}
 	
-	protected ConfigurationSection inherit(org.bukkit.configuration.ConfigurationSection section) {
+	public ConfigurationSection inherit(org.bukkit.configuration.ConfigurationSection section) {
 		return new ConfigurationSection(rootFolder, abbreviation, section);
 	}
 	
