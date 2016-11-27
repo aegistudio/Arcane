@@ -59,9 +59,6 @@ public class ArcanePlugin extends JavaPlugin {
 			extensionPath = new File(getDataFolder(), effectEngineConfig.getString("extensionPath"));
 			templatePath = new File(getDataFolder(), effectEngineConfig.getString("templatePath"));
 			
-			// Create arcane engine
-			engine = new ArcaneEngine(getLogger(), new ConfigurationSection(effectPath, abbreviation, null));
-			
 			// Printing arcane debugging info.
 			getServer().getLogger().info("Using following configuration in Arcane Engine: ");
 			getServer().getLogger().info("+ Effects(*." + fileExtension + "): " + effectPath.getAbsolutePath());
@@ -78,6 +75,10 @@ public class ArcanePlugin extends JavaPlugin {
 			ConfigurationSection buffConfig = new ConfigurationSection(resourcePath, abbreviation, rootConfig);
 			buffManager = buffConfig.loadInstance(BuffManager.class, "buffEngineClass", 
 					(Class<BuffManager>)null, "buffEngineConfig", null);
+			
+			// Create arcane engine
+			engine = new ArcaneEngine(getLogger(), new ConfigurationSection(effectPath, abbreviation, null), 
+					new ArcanePluginContext(getServer(), this, buffManager));
 			
 			// Load effect configurations.
 			File[] effectFiles = effectPath.listFiles(name -> name.getName().endsWith("." + fileExtension));
