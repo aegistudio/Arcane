@@ -1,6 +1,8 @@
 package net.aegistudio.arcane;
 
 import java.util.HashMap;
+import java.util.Map.Entry;
+import java.util.Set;
 import java.util.function.Function;
 
 public class ContextualMap<T> {
@@ -14,5 +16,9 @@ public class ContextualMap<T> {
 		T t = map.get(context);
 		if(t == null) map.put(context, t = abscence.apply(context));
 		return t;
+	}
+	
+	public Set<Entry<Context, T>> entrySet() {
+		return map.entrySet();
 	}
 }

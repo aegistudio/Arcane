@@ -1,9 +1,9 @@
 package net.aegistudio.arcane.capable;
 
-import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 import net.aegistudio.arcane.Context;
-import net.aegistudio.arcane.config.ConfigurationSection;
+import net.aegistudio.arcane.Module;
 
 /**
  * Allowing storing plugin bound information
@@ -13,6 +13,7 @@ import net.aegistudio.arcane.config.ConfigurationSection;
  */
 
 public interface Decorative extends Capability {
-	public String decorate(Context context, String identifier, 
-			Consumer<ConfigurationSection> decorator);
+	public <T extends Module> void register(Context context, String identifier, Supplier<T> factory);
+	
+	public <T extends Module> T get(Context context, String identifier, String effect, Class<T> type);
 }
