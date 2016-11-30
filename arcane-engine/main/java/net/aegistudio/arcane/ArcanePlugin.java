@@ -6,7 +6,7 @@ import java.net.URLClassLoader;
 import java.util.logging.Level;
 
 import org.bukkit.configuration.Configuration;
-
+import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import net.aegistudio.arcane.config.ConfigurationSection;
@@ -87,6 +87,10 @@ public class ArcanePlugin extends JavaPlugin {
 				effectName = effectName.substring(0, effectName.length() - fileExtension.length() - 1);
 				engine.accept(effectName, effectFile);
 			}
+			
+			// Register arcane engine service.
+			getServer().getServicesManager().register(Engine.class, this.engine, 
+					this, ServicePriority.High);
 		}
 		catch(Exception e) {
 			getServer().getLogger().log(Level.SEVERE, 

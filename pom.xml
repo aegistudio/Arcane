@@ -64,5 +64,6 @@
 		<module>arcane-preset-effect</module>
 		<module>arcane-engine</module>
 		<module>arcane-buff-manager</module>
+		<module>arcane-demo</module>
 	</modules>
 </project>

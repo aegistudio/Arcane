@@ -1,0 +1,22 @@
+name: ArcaneDemo
+main: net.aegistudio.arcane.demo.DemoPlugin
+version: 1.0
+author: aegistudio
+commands:
+  demoexec:
+    description: Execute effect provided by arcane engine.
+    usage: /demoexec <effect> [<effectParameters>]
+    permission: arcanedemo.exec
+    permission-message: You don't have permission to do that!
+  demodescribe:
+    description: Describe effect provided by arcane engine.
+    usage: /demodescribe <effect> [<effectParameters>]
+    permission: arcanedemo.describe
+    permission-message: You don't have permission to do that!
+permissions:
+  arcanedemo.exec:
+    description: Execute arcane demo execute.
+    default: op
+  arcanedemo.describe:
+    description: Execute arcane demo describe.
+    default: op
