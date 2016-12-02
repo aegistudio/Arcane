@@ -3,6 +3,7 @@ package net.aegistudio.arcane.demo;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Level;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -13,15 +14,33 @@ import org.bukkit.plugin.java.JavaPlugin;
 import net.aegistudio.arcane.Context;
 import net.aegistudio.arcane.EngineModule;
 import net.aegistudio.arcane.capable.Descriptive;
-import net.aegistudio.arcane.stub.DeftConnector;
+import net.aegistudio.arcane.config.ConfigurationSection;
+import net.aegistudio.arcane.map.ClassAbbreviation;
 
 public class DemoPlugin extends JavaPlugin {
-	EngineModule engine = new DeftConnector();
+	EngineModule engine;
 	Context connection;
 	
 	@Override
 	public void onEnable() {
-		connection = engine.connect(getServer(), this);
+		try {
+			// Initialize configuration.
+			saveDefaultConfig();
+			reloadConfig();
+			ConfigurationSection rootConfig = new ConfigurationSection(getDataFolder(), 
+					new ClassAbbreviation(), getConfig());
+		
+			// Load your engine module (stub) by configuration specified.
+			// The two nulls are default classes if entry absence. Seems we don't require it here.
+			engine = rootConfig.loadInstance(EngineModule.class, "engineClass", null, "engineConfig", null);
+			
+			// Connect to arcane engine service.
+			connection = engine.connect(getServer(), this);
+		}
+		catch(Exception e) {
+			setEnabled(false);
+			getLogger().log(Level.SEVERE, "Error loading demo plugin.", e);
+		}
 	}
 	
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] arguments) {
