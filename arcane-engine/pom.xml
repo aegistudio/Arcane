@@ -43,8 +43,7 @@
 		<!-- add abstraction to this workset -->
 		<dependency>
 			<groupId>net.aegistudio.arcane</groupId>
-			<artifactId>arcane-api</artifactId>
-			<version>${arcane.api.version}</version>
+			<artifactId>arcane-interface</artifactId>
 		</dependency>
 		<!-- add other submodules to this workset -->
 		<dependency>
