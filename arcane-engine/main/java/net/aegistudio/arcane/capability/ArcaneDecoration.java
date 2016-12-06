@@ -2,6 +2,7 @@ package net.aegistudio.arcane.capability;
 
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.logging.Level;
 
@@ -17,10 +18,14 @@ public class ArcaneDecoration {
 		final String name;
 		final Supplier<? extends Module> supplier;
 		final Map<String, Module> moduleMap = new TreeMap<>();
+		final Function<String, ConfigurationSection> backup;
 		
-		public DecorationEntry(String name, Supplier<? extends Module> supplier) {
+		public DecorationEntry(String name, Supplier<? extends Module> supplier, 
+				Function<String, ConfigurationSection> backup) {
+			
 			this.name = name;
 			this.supplier = supplier;
+			this.backup = backup;
 		}
 		
 		public void loadSingeEffect(String key, ArcaneEffect value) {
@@ -28,8 +33,12 @@ public class ArcaneDecoration {
 			ConfigurationSection context = getContextSection(value);
 			
 			try {
-				if(!context.contains(name)) context.createSection(name);
-				newModule.load(context.getConfigurationSection(name));
+				if(context.contains(name)) 
+					newModule.load(context.getConfigurationSection(name));
+				else if(backup != null) {
+					ConfigurationSection backupSection = backup.apply(key);
+					if(backupSection != null) newModule.load(backupSection);
+				}
 				moduleMap.put(key, newModule);
 			}
 			catch(Exception e) {
@@ -86,9 +95,11 @@ public class ArcaneDecoration {
 		engine.allEffects((key, value) -> entry.loadSingeEffect(key, value));
 	}
 	
-	public void register(String name, Supplier<? extends Module> supplier) {
+	public void register(String name, Supplier<? extends Module> supplier, 
+			Function<String, ConfigurationSection> backup) {
+		
 		if(!decorations.containsKey(name)) {
-			DecorationEntry entry = new DecorationEntry(name, supplier);
+			DecorationEntry entry = new DecorationEntry(name, supplier, backup);
 			
 			decorations.put(name, entry);
 			loadSection(name, entry);
