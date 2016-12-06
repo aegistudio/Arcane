@@ -28,7 +28,7 @@ public class ArcaneDecoration {
 			this.backup = backup;
 		}
 		
-		public void loadSingeEffect(String key, ArcaneEffect value) {
+		public void loadSingleEffect(String key, ArcaneEffect value) {
 			Module newModule = supplier.get();
 			ConfigurationSection context = getContextSection(value);
 			
@@ -39,7 +39,12 @@ public class ArcaneDecoration {
 					ConfigurationSection backupSection = backup.apply(key);
 					if(backupSection != null) newModule.load(backupSection);
 				}
+				
 				moduleMap.put(key, newModule);
+				
+				// Fire effect saving.
+				saveSingleEffect(key, value);
+				engine.saveEffect(key, value);
 			}
 			catch(Exception e) {
 				engine.getLogger().log(Level.SEVERE, 
@@ -55,7 +60,7 @@ public class ArcaneDecoration {
 				if(!context.contains(name)) 
 					context.createSection(name);
 				decoration.save(context.getConfigurationSection(name));
-			} 
+			}
 			catch(Exception e) {
 				engine.getLogger().log(Level.SEVERE, 
 						"Error while saving decoration " + name + " for effect " + key, e);
@@ -92,7 +97,7 @@ public class ArcaneDecoration {
 	}
 	
 	private void loadSection(String name, DecorationEntry entry) {
-		engine.allEffects((key, value) -> entry.loadSingeEffect(key, value));
+		engine.allEffects((key, value) -> entry.loadSingleEffect(key, value));
 	}
 	
 	public void register(String name, Supplier<? extends Module> supplier, 
@@ -104,10 +109,12 @@ public class ArcaneDecoration {
 			decorations.put(name, entry);
 			loadSection(name, entry);
 		}
+		else throw new IllegalStateException(
+				"Decoration " + name + " already registered!");
 	}
 	
 	public void accept(String key, ArcaneEffect value) {
-		decorations.forEach((name, entry) -> entry.loadSingeEffect(key, value));
+		decorations.forEach((name, entry) -> entry.loadSingleEffect(key, value));
 	}
 	
 	public void save(String effectName, ArcaneEffect effect) {

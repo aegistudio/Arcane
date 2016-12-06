@@ -13,6 +13,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import net.aegistudio.arcane.Context;
 import net.aegistudio.arcane.EngineModule;
+import net.aegistudio.arcane.capable.Decorative;
 import net.aegistudio.arcane.capable.Descriptive;
 import net.aegistudio.arcane.config.ConfigurationSection;
 import net.aegistudio.arcane.map.ClassAbbreviation;
@@ -20,6 +21,8 @@ import net.aegistudio.arcane.map.ClassAbbreviation;
 public class DemoPlugin extends JavaPlugin {
 	EngineModule engine;
 	Context connection;
+	
+	Decorative decorative;
 	
 	@Override
 	public void onEnable() {
@@ -36,6 +39,11 @@ public class DemoPlugin extends JavaPlugin {
 			
 			// Connect to arcane engine service.
 			connection = engine.connect(getServer(), this);
+			
+			// Register an effect filter flag.
+			decorative = engine.capable(Decorative.class);
+			if(decorative != null) 
+				decorative.register(connection, "enabled", () -> new DemoEffectEnabled(), null);
 		}
 		catch(Exception e) {
 			setEnabled(false);
@@ -51,6 +59,7 @@ public class DemoPlugin extends JavaPlugin {
 				
 				if(!(sender instanceof Entity)) return false;
 				if(arguments.length == 0) return false;
+				if(!checkEnabled(toEffectName(arguments))) return false;
 				
 				engine.execute(connection, (Entity)sender, 
 						toEffectName(arguments), toEffectArgs(arguments));
@@ -62,6 +71,8 @@ public class DemoPlugin extends JavaPlugin {
 				// Or you will get the very description from the engine.
 				
 				if(arguments.length == 0) return false;
+				if(!checkEnabled(toEffectName(arguments))) return false;
+				
 				Descriptive descriptive = engine.capable(Descriptive.class);
 				if(descriptive == null) sender.sendMessage(
 						ChatColor.RED + "The engine does not support descriptive.");
@@ -90,9 +101,19 @@ public class DemoPlugin extends JavaPlugin {
 		String name = toEffectName(arguments);
 		ArrayList<String> result = new ArrayList<>();
 		engine.all().forEach(effect -> { 
-			if(effect.startsWith(name)) result.add(effect);
+			if(!effect.startsWith(name)) return;
+			if(!checkEnabled(effect)) return;
+			
+			result.add(effect);
 		});
 		return result;
+	}
+	
+	private boolean checkEnabled(String effect) {
+		if(decorative == null) return true;
+		DemoEffectEnabled enabled = 
+			decorative.get(connection, "enabled", effect, DemoEffectEnabled.class);
+		return enabled != null? enabled.enabled : true;
 	}
 	
 	private String toEffectName(String[] arguments) {

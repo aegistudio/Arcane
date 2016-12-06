@@ -59,21 +59,27 @@ public class ArcaneEngine implements Engine {
 			extensions.forEach((capability, extension) 
 					-> extension.accept(name, effect));
 			allEffects.put(name, effect);
-			effect.save(root);
+			saveEffect(name, effect);
 		}
 		catch(Exception e) {
 			logger.log(Level.SEVERE, "Error while loading effect " + name, e);
 		}
 	}
 	
-	public void save() {
-		for(Entry<String, ArcaneEffect> effect : allEffects.entrySet()) try {
-			extensions.forEach((capability, extension) 
-					-> extension.save(effect.getKey(), effect.getValue()));
-			effect.getValue().save(root);
+	public void saveEffect(String name, ArcaneEffect effect) {
+		try {
+			effect.save(root);
 		}
 		catch(Exception e) {
-			logger.log(Level.SEVERE, "Error while saving effect " + effect.getKey(), e);
+			logger.log(Level.SEVERE, "Error while saving effect " + name, e);
+		}
+	}
+	
+	public void save() {
+		for(Entry<String, ArcaneEffect> effect : allEffects.entrySet()) {
+			extensions.forEach((capability, extension) 
+					-> extension.save(effect.getKey(), effect.getValue()));
+			saveEffect(effect.getKey(), effect.getValue());
 		}
 	}
 	
