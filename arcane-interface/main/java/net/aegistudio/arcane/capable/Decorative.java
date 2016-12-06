@@ -5,6 +5,7 @@ import java.util.function.Supplier;
 
 import net.aegistudio.arcane.Context;
 import net.aegistudio.arcane.Module;
+import net.aegistudio.arcane.config.Configurable;
 import net.aegistudio.arcane.config.ConfigurationSection;
 
 /**
@@ -21,10 +22,20 @@ public interface Decorative extends Capability {
 	 * @param context The plugin context.
 	 * @param identifier The decorative identifier inside the plugin.
 	 * @param factory The decorative object factory.
-	 * @param backup When a preset object absent, provides a default section.
+	 * @param backup When the decorative section absent, provides a default section.
 	 */
 	public <T extends Module> void register(Context context, String identifier, 
 			Supplier<T> factory, Function<String, ConfigurationSection> backup);
 	
-	public <T extends Module> T get(Context context, String identifier, String effect, Class<T> type);
+	/**
+	 * Register a decorative single value on engine database.
+	 * @param context The plugin context.
+	 * @param identifier The decorative identifier inside the plugin.
+	 * @param valueType The configurable type of the decoration.
+	 * @param backup When the decorative value absent, provides a default value.
+	 */
+	public <T> void register(Context context, String identifier, Configurable.Type valueType, 
+			Function<String, T> backup);
+	
+	public <T> T get(Context context, String identifier, String effect, Class<T> type);
 }

@@ -2,75 +2,15 @@ package net.aegistudio.arcane.capability;
 
 import java.util.Map;
 import java.util.TreeMap;
-import java.util.function.Function;
-import java.util.function.Supplier;
 import java.util.logging.Level;
 
 import net.aegistudio.arcane.ArcaneEffect;
 import net.aegistudio.arcane.ArcaneEngine;
 import net.aegistudio.arcane.Context;
-import net.aegistudio.arcane.Module;
 import net.aegistudio.arcane.config.ConfigurationSection;
 
 public class ArcaneDecoration {
-	protected final Map<String, DecorationEntry> decorations = new TreeMap<>();
-	protected class DecorationEntry {
-		final String name;
-		final Supplier<? extends Module> supplier;
-		final Map<String, Module> moduleMap = new TreeMap<>();
-		final Function<String, ConfigurationSection> backup;
-		
-		public DecorationEntry(String name, Supplier<? extends Module> supplier, 
-				Function<String, ConfigurationSection> backup) {
-			
-			this.name = name;
-			this.supplier = supplier;
-			this.backup = backup;
-		}
-		
-		public void loadSingleEffect(String key, ArcaneEffect value) {
-			Module newModule = supplier.get();
-			ConfigurationSection context = getContextSection(value);
-			
-			try {
-				if(context.contains(name)) 
-					newModule.load(context.getConfigurationSection(name));
-				else if(backup != null) {
-					ConfigurationSection backupSection = backup.apply(key);
-					if(backupSection != null) newModule.load(backupSection);
-				}
-				
-				moduleMap.put(key, newModule);
-				
-				// Fire effect saving.
-				saveSingleEffect(key, value);
-				engine.saveEffect(key, value);
-			}
-			catch(Exception e) {
-				engine.getLogger().log(Level.SEVERE, 
-						"Error while loading decoration " + name + " for effect " + key, e);
-			}
-		}
-		
-		public void saveSingleEffect(String key, ArcaneEffect value) {
-			ConfigurationSection context = getContextSection(value);
-			
-			Module decoration = moduleMap.get(key);
-			if(decoration != null) try {
-				if(!context.contains(name)) 
-					context.createSection(name);
-				decoration.save(context.getConfigurationSection(name));
-			}
-			catch(Exception e) {
-				engine.getLogger().log(Level.SEVERE, 
-						"Error while saving decoration " + name + " for effect " + key, e);
-			}
-		}
-		
-		public Module getModule(String effectName) {
-			return moduleMap.get(effectName);
-		}
-	}
+	protected final Map<String, DecorativeEntry> decorations = new TreeMap<>();
 	
 	protected final Context context;
 	protected final ArcaneEngine engine;
@@ -96,16 +36,41 @@ public class ArcaneDecoration {
 		return section;
 	}
 	
-	private void loadSection(String name, DecorationEntry entry) {
-		engine.allEffects((key, value) -> entry.loadSingleEffect(key, value));
+	private void loadSingle(String name, String key, ArcaneEffect value, DecorativeEntry entry) {
+		try {
+			ConfigurationSection contextSection = getContextSection(value);
+			
+			entry.loadSingleEffect(key, contextSection);
+			
+			// Fire effect saving.
+			saveSingle(name, key, value, entry);
+			engine.saveEffect(key, value);
+		}
+		catch(Exception e) {
+			engine.getLogger().log(Level.SEVERE, 
+					"Error while loading decoration " + name + " for effect " + key, e);
+		}
 	}
 	
-	public void register(String name, Supplier<? extends Module> supplier, 
-			Function<String, ConfigurationSection> backup) {
+	private void saveSingle(String name, String key, ArcaneEffect value, DecorativeEntry entry) {
+		try {
+			ConfigurationSection contextSection = getContextSection(value);
+			
+			entry.saveSingleEffect(key, contextSection);
+		}
+		catch(Exception e) {
+			engine.getLogger().log(Level.SEVERE, 
+					"Error while saving decoration " + name + " for effect " + key, e);
+		}
+	}
+	
+	private void loadSection(String name, DecorativeEntry entry) {
+		engine.allEffects((key, value) -> loadSingle(name, key, value, entry));
+	}
+	
+	public void register(String name, DecorativeEntry entry) {
 		
 		if(!decorations.containsKey(name)) {
-			DecorationEntry entry = new DecorationEntry(name, supplier, backup);
-			
 			decorations.put(name, entry);
 			loadSection(name, entry);
 		}
@@ -114,18 +79,17 @@ public class ArcaneDecoration {
 	}
 	
 	public void accept(String key, ArcaneEffect value) {
-		decorations.forEach((name, entry) -> entry.loadSingleEffect(key, value));
+		decorations.forEach((name, entry) -> loadSingle(name, key, value, entry));
 	}
 	
 	public void save(String effectName, ArcaneEffect effect) {
-		decorations.forEach((decorationName, decorationEntry) -> {
-				decorationEntry.saveSingleEffect(effectName, effect);
-		});
+		decorations.forEach((decorationName, decorationEntry) -> 
+			saveSingle(decorationName, effectName, effect, decorationEntry));
 	}
 	
-	public Module getModule(String decoration, String effect) {
-		DecorationEntry entry = decorations.get(decoration);
+	public Object get(String decoration, String effect) {
+		DecorativeEntry entry = decorations.get(decoration);
 		if(entry == null) return null;
-		return entry.getModule(effect);
+		return entry.getValue(effect);
 	}
 }
