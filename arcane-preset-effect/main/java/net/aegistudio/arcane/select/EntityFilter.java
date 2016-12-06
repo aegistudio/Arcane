@@ -1,4 +1,4 @@
-package net.aegistudio.magick.buff;
+package net.aegistudio.arcane.select;
 
 import java.util.List;
 
