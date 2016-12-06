@@ -30,18 +30,20 @@ public class ArcaneDecorative implements EngineExtension, Decorative {
 
 	@Override
 	public <T extends Module> void register(Context context, String decoration, 
-			Supplier<T> factory, Function<String, ConfigurationSection> backup) {
-
-		DecorativeSectionEntry entry = new DecorativeSectionEntry(decoration, factory, backup);
-		
+			Supplier<T> factory, Function<String, ConfigurationSection> backup) {		
 		engine.validate(context);
+		
+		DecorativeSectionEntry entry = new DecorativeSectionEntry(decoration, factory, backup);
 		decorativeMap.get(context).register(decoration, entry);
 	}
 
 	@Override
-	public <T> void register(Context context, String identifier, 
+	public <T> void register(Context context, String decoration, 
 			Type valueType, Function<String, T> backup) {
+		engine.validate(context);
 		
+		SingleValueEntry<T> entry = new SingleValueEntry<T>(decoration, valueType, backup);
+		decorativeMap.get(context).register(decoration, entry);
 	}
 	
 	@Override

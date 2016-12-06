@@ -15,6 +15,7 @@ import net.aegistudio.arcane.Context;
 import net.aegistudio.arcane.EngineModule;
 import net.aegistudio.arcane.capable.Decorative;
 import net.aegistudio.arcane.capable.Descriptive;
+import net.aegistudio.arcane.config.Configurable;
 import net.aegistudio.arcane.config.ConfigurationSection;
 import net.aegistudio.arcane.map.ClassAbbreviation;
 
@@ -43,7 +44,7 @@ public class DemoPlugin extends JavaPlugin {
 			// Register an effect filter flag.
 			decorative = engine.capable(Decorative.class);
 			if(decorative != null) 
-				decorative.register(connection, "enabled", () -> new DemoEffectEnabled(), null);
+				decorative.register(connection, "enabled", Configurable.Type.CONSTANT, (effect) -> true);
 		}
 		catch(Exception e) {
 			setEnabled(false);
@@ -111,9 +112,9 @@ public class DemoPlugin extends JavaPlugin {
 	
 	private boolean checkEnabled(String effect) {
 		if(decorative == null) return true;
-		DemoEffectEnabled enabled = 
-			decorative.get(connection, "enabled", effect, DemoEffectEnabled.class);
-		return enabled != null? enabled.enabled : true;
+		Boolean enabled = 
+			decorative.get(connection, "enabled", effect, Boolean.class);
+		return enabled != null? enabled : true;
 	}
 	
 	private String toEffectName(String[] arguments) {
